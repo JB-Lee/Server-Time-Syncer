@@ -17,39 +17,36 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/name"
+                android:id="@+id/tv_board_writer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:text="Name"
                 android:textColor="@color/colorHighlight"/>
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_board_hostname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:text="#naver.com"/>
+                android:textSize="12sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_board_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:textSize="10sp"
-                android:text="오늘 오전 12:30"/>
+                android:layout_marginStart="5dp"
+                android:textSize="12sp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text1"
+            android:id="@+id/tv_board_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="12sp"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="15dp"
-            android:maxLength="100"
-            android:text="lorem ip sum"/>
+            android:layout_marginStart="15dp"
+            android:maxLength="100" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
