@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.Binary-Finery:Bungee:master-SNAPSHOT@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/840c7e5df50fbe7017c4a70de80e2917/jetified-Bungee-master-SNAPSHOT/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/840c7e5df50fbe7017c4a70de80e2917/jetified-Bungee-master-SNAPSHOT/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Binary-Finery/Bungee/master-SNAPSHOT/1448c1fb7250fac42be0e92f38b80cb5aad15cce/Bungee-master-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
