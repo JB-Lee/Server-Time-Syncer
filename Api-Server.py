@@ -7,6 +7,7 @@ app = Flask(__name__)
 api = Api(app)
 
 
+# fetch 결과를 Dict<컬럼명, 값> 형태로 변환
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
@@ -14,8 +15,10 @@ def dict_factory(cursor, row):
     return d
 
 
+# 게시판 요청 처리 클래스
 class Board:
 
+    # DB 초기화 클래스
     @staticmethod
     def init_table():
         with sqlite3.connect("project.db") as conn:
@@ -28,6 +31,7 @@ class Board:
             conn.execute(init_sql)
             conn.commit()
 
+    # 게시판 조회 요청 처리 클래스
     class Lookup(Resource):
         @staticmethod
         def get():
@@ -49,6 +53,7 @@ class Board:
             except Exception as e:
                 return {"status": "Fail", "content": str(e)}
 
+    # 게시판 입력 요청 처리 클래스
     class Insert(Resource):
         @staticmethod
         def get():
@@ -71,6 +76,7 @@ class Board:
                 return {"status": "Fail", "content": str(e)}
 
 
+# 핸들러 별 경로 지정
 api.add_resource(Board.Insert, "/board/insert")
 api.add_resource(Board.Lookup, "/board/lookup")
 
