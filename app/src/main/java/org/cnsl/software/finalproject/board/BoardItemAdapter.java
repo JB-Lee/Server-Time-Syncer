@@ -13,13 +13,14 @@ import org.cnsl.software.finalproject.R;
 import org.cnsl.software.finalproject.utils.TimeFormatter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.ViewHolder> {
 
-    private ArrayList<BoardItem> boardItems;
+    private List<BoardItem> boardItems;
 
     public BoardItemAdapter(ArrayList<BoardItem> list) {
         boardItems = list;
@@ -50,6 +51,16 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.View
     @Override
     public int getItemCount() {
         return boardItems.size();
+    }
+
+    public void appendItem(BoardItem item) {
+        boardItems.add(0, item);
+        notifyItemInserted(0);
+    }
+
+    public void setNewItems(List<BoardItem> list) {
+        boardItems = list;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

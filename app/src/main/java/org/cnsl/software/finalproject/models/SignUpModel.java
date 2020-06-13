@@ -36,8 +36,7 @@ public class SignUpModel {
     }
 
     public String getCrackTime(int risk) {
-        int sec = risk;
-        int min = sec / 60;
+        int min = risk / 60;
         int hour = min / 60;
         int day = hour / 24;
         int month = day / 30;
@@ -46,17 +45,17 @@ public class SignUpModel {
         String crackTime = "";
 
         if (year > 0)
-            crackTime += String.valueOf(year) + "년";
+            crackTime += year + "년";
         else if (month > 0)
-            crackTime += String.valueOf(month) + "개월";
+            crackTime += month + "개월";
         else if (day > 0)
-            crackTime += String.valueOf(day) + "일";
+            crackTime += day + "일";
         else if (hour > 0)
-            crackTime += String.valueOf(hour) + "시간";
+            crackTime += hour + "시간";
         else if (min > 0)
-            crackTime += String.valueOf(min) + "분";
-        else if (sec > 0)
-            crackTime += String.valueOf(sec) + "초";
+            crackTime += min + "분";
+        else if (risk > 0)
+            crackTime += risk + "초";
         else
             crackTime += "즉시";
 
@@ -64,8 +63,7 @@ public class SignUpModel {
     }
 
     public int getWarningColor(int risk) {
-        int sec = risk;
-        int min = sec / 60;
+        int min = risk / 60;
         int hour = min / 60;
         int day = hour / 24;
         int month = day / 30;

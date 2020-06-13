@@ -2,38 +2,35 @@ package org.cnsl.software.finalproject;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.URLUtil;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.cnsl.software.finalproject.board.BoardItem;
 import org.cnsl.software.finalproject.board.BoardItemAdapter;
 import org.cnsl.software.finalproject.contract.Main;
-import org.cnsl.software.finalproject.utils.Animation;
-import org.cnsl.software.finalproject.utils.HttpHelper;
+import org.cnsl.software.finalproject.utils.ViewAnimation;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import butterknife.BindAnim;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,9 +38,6 @@ import butterknife.OnEditorAction;
 import butterknife.OnFocusChange;
 
 public class MainActivity extends AppCompatActivity implements Main.View {
-    String TAG = "test";
-
-    Calendar timer = Calendar.getInstance();
 
     @BindView(R.id.tv_main_time)
     AppCompatTextView tvTime;
@@ -55,30 +49,85 @@ public class MainActivity extends AppCompatActivity implements Main.View {
     AppCompatTextView tvHostName;
     @BindView(R.id.srl_main_swipe)
     SwipeRefreshLayout srlSwipe;
+    @BindView(R.id.rv_main_board)
+    RecyclerView rvBoard;
 
-    Handler mHandler = new Handler() {
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss", Locale.US);
+    @BindView(R.id.li_main_open_url)
+    LinearLayoutCompat liOpenUrl;
+    @BindView(R.id.li_main_write)
+    LinearLayoutCompat liWrite;
 
-        @Override
-        public void handleMessage(Message msg) {
-            timer.add(Calendar.SECOND, 1);
-            tvTime.setText(format.format(timer.getTime()));
-            mHandler.sendEmptyMessageDelayed(0, 1000);
-        }
-    };
+    @BindView(R.id.fab_main_menu)
+    FloatingActionButton fabMenu;
+    @BindView(R.id.fab_main_write)
+    FloatingActionButton fabWrite;
+    @BindView(R.id.fab_main_open_url)
+    FloatingActionButton fabOpenUrl;
 
-    public void toggleView() {
+    @BindAnim(R.anim.fab_close)
+    Animation animFabClose;
+    @BindAnim(R.anim.fab_open)
+    Animation animFabOpen;
+    @BindAnim(R.anim.fab_main_close)
+    Animation animFabMainClose;
+    @BindAnim(R.anim.fab_main_open)
+    Animation animFabMainOpen;
+
+
+    Main.Presenter presenter;
+
+    Calendar timer = Calendar.getInstance();
+    BoardItemAdapter adapter;
+    Handler handler = new Handler();
+
+    Boolean fabOpened = false;
+
+
+    @Override
+    public void boardAddItem(BoardItem item) {
+        adapter.appendItem(item);
+    }
+
+    @Override
+    public void setServerTime(Date date) {
+        timer.setTime(date);
+    }
+
+    @Override
+    public void setHostName(String hostname) {
+        tvHostName.setText(hostname);
+    }
+
+    @Override
+    public void toggleUrlHeader() {
         tlUrlHeader.measure(TextInputLayout.LayoutParams.MATCH_PARENT, TextInputLayout.LayoutParams.WRAP_CONTENT);
         final int measuredHeight = tlUrlHeader.getMeasuredHeight();
 
-        Log.d(TAG, "toggleUrlInput: " + measuredHeight);
-
         if (tlUrlHeader.getHeight() == 0) {
-            Animation.slideView(tlUrlHeader, 0, measuredHeight);
+            ViewAnimation.slideView(tlUrlHeader, 0, measuredHeight);
         } else {
-            Animation.slideView(tlUrlHeader, measuredHeight, 0);
+            ViewAnimation.slideView(tlUrlHeader, measuredHeight, 0);
         }
 
+    }
+
+    @Override
+    public void toggleFabButton() {
+        if (fabOpened) {
+            liWrite.startAnimation(animFabClose);
+            liOpenUrl.startAnimation(animFabClose);
+            fabMenu.startAnimation(animFabMainClose);
+            fabWrite.setClickable(false);
+            fabOpenUrl.setClickable(false);
+            fabOpened = false;
+        } else {
+            liWrite.startAnimation(animFabOpen);
+            liOpenUrl.startAnimation(animFabOpen);
+            fabMenu.startAnimation(animFabMainOpen);
+            fabWrite.setClickable(true);
+            fabOpenUrl.setClickable(true);
+            fabOpened = true;
+        }
     }
 
     @Override
@@ -90,58 +139,54 @@ public class MainActivity extends AppCompatActivity implements Main.View {
 
         ButterKnife.bind(this);
 
+        presenter = new MainPresenter(this);
+        adapter = new BoardItemAdapter(list);
 
-        for (int i = 0; i < 100; i++) {
+        rvBoard.setLayoutManager(new LinearLayoutManager(this));
+        rvBoard.setAdapter(adapter);
 
-            list.add(new BoardItem(
-                    String.format(Locale.US, "Name %d", i),
-                    "cnsl.org",
-                    String.format(Locale.US, "Lorem Ipsum %d", i),
-                    (int) (System.currentTimeMillis() / 1000) - 10000 * i
-            ));
+//        시계 작동
+        handler.post(
+                new Runnable() {
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss", Locale.US);
 
-        }
+                    @Override
+                    public void run() {
+                        timer.add(Calendar.SECOND, 1);
+                        tvTime.setText(format.format(timer.getTime()));
 
-        RecyclerView recyclerView = findViewById(R.id.rv_main_board);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                        handler.postDelayed(this, 1000);
+                    }
+                }
+        );
 
-        BoardItemAdapter adapter = new BoardItemAdapter(list);
-        recyclerView.setAdapter(adapter);
-        mHandler.sendEmptyMessage(0);
-
-        srlSwipe.setOnRefreshListener(() -> srlSwipe.setRefreshing(false));
+//        스와이프 리프레시
+        srlSwipe.setOnRefreshListener(() -> presenter.onBoardRefresh(srlSwipe));
 
     }
 
-    @OnClick(R.id.tv_main_time)
-    public void test(View view) {
+    @OnClick({R.id.fab_main_menu, R.id.fab_main_open_url, R.id.fab_main_write})
+    public void onFabClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.fab_main_menu:
+                toggleFabButton();
+                break;
+            case R.id.fab_main_open_url:
+                toggleUrlHeader();
+                break;
+            case R.id.fab_main_write:
+                presenter.onPostArticle();
+                break;
+        }
     }
 
     @OnEditorAction(R.id.et_main_url)
-    public boolean onEnter(TextView view, int actionId, KeyEvent event) {
+    public boolean onEnter(int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_NEXT || event.getAction() == KeyEvent.ACTION_DOWN) {
-            toggleView();
+            toggleUrlHeader();
             ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(etUrl.getWindowToken(), 0);
-            new Thread() {
-                @Override
-                public void run() {
-                    if (URLUtil.isValidUrl(etUrl.getText().toString())) {
-                        HttpHelper.Conn conn = new HttpHelper.Conn(etUrl.getText().toString());
-                        //Date time = HttpHelper.getServerTime(url.getText().toString());
-                        Date time = conn.getServerTime();
-                        String title = null;
-                        try {
-                            title = new URL(etUrl.getText().toString()).getHost();
-                        } catch (MalformedURLException e) {
-                            e.printStackTrace();
-                        }
-                        if (time != null)
-                            timer.setTime(time);
-                        tvHostName.setText(title);
-                    }
-
-                }
-            }.start();
+            presenter.onServerTimeLookup("http://" + etUrl.getText());
             return true;
         }
         return false;
@@ -150,6 +195,6 @@ public class MainActivity extends AppCompatActivity implements Main.View {
     @OnFocusChange(R.id.et_main_url)
     public void onFocusChange(View view, boolean hasFocus) {
         if (!hasFocus)
-            toggleView();
+            toggleUrlHeader();
     }
 }

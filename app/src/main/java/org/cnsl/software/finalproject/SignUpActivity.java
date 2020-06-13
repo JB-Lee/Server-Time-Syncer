@@ -1,21 +1,22 @@
 package org.cnsl.software.finalproject;
 
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
-import android.os.Bundle;
-import android.view.View;
-
 import com.google.android.material.textfield.TextInputEditText;
+
+import org.cnsl.software.finalproject.contract.SignUp;
 
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import org.cnsl.software.finalproject.contract.SignUp;
 
 public class SignUpActivity extends AppCompatActivity implements SignUp.View {
 
@@ -65,10 +66,10 @@ public class SignUpActivity extends AppCompatActivity implements SignUp.View {
     @OnClick(R.id.btn_signup_sign_up)
     public void onSignUp(View view) {
         presenter.onSignUp(
-                etId.getText().toString(),
-                etEmail.getText().toString(),
-                etPass.getText().toString(),
-                etChkPass.getText().toString()
+                String.valueOf(etId.getText()),
+                String.valueOf(etEmail.getText()),
+                String.valueOf(etPass.getText()),
+                String.valueOf(etChkPass.getText())
         );
     }
 

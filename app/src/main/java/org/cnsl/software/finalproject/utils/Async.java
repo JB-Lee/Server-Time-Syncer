@@ -6,7 +6,7 @@ import java.util.concurrent.Callable;
 
 public class Async {
 
-    interface Callback<T> {
+    public interface Callback<T> {
         void onResult(T result);
 
         void onError(Exception e);

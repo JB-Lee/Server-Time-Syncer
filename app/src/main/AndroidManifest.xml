@@ -12,11 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name="org.cnsl.software.finalproject.FindPasswordActivity"></activity>
-        <activity android:name="org.cnsl.software.finalproject.SignUpActivity" />
-        <activity android:name="org.cnsl.software.finalproject.MainActivity" />
+        <activity android:name=".PostActivity"></activity>
+        <activity android:name=".FindPasswordActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".MainActivity" />
         <activity
-            android:name="org.cnsl.software.finalproject.LoginActivity"
+            android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

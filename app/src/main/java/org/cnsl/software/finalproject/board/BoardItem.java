@@ -2,8 +2,10 @@ package org.cnsl.software.finalproject.board;
 
 public class BoardItem {
 
-    private String writer, host, content;
-    private int epochSecond;
+    private final String writer;
+    private final String host;
+    private final String content;
+    private final int epochSecond;
 
     public BoardItem(String writer, String host, String content, int epochSecond) {
         this.writer = writer;

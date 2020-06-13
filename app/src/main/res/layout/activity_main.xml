@@ -2,6 +2,7 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -38,7 +39,10 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tl_main_url_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="#ccc"
+                app:boxStrokeWidth="2dp"
+                app:prefixText="http://">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_main_url"
@@ -46,8 +50,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textUri"
                     android:hint="URL"
-                    android:text="http://"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -68,7 +71,7 @@
                 android:id="@+id/rv_main_board"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="vertical"/>
+                android:scrollbars="vertical" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -77,7 +80,66 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="20dp"/>
+            android:layout_margin="20dp"
+            android:src="@drawable/ic_add_black_24dp"
+            android:tint="#fff" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/li_main_open_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="90dp"
+            android:gravity="right|center"
+            android:orientation="horizontal"
+            android:visibility="invisible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="시간 설정"
+                android:textSize="16sp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_main_open_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_update_black_24dp"
+                android:tint="#fff" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/li_main_write"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="170dp"
+            android:gravity="right|center"
+            android:orientation="horizontal"
+            android:visibility="invisible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="글 쓰기"
+                android:textSize="16sp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_main_write"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_create_black_24dp"
+                android:tint="#fff" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </FrameLayout>
     
