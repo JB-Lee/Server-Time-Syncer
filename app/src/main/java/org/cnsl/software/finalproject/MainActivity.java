@@ -1,14 +1,11 @@
 package org.cnsl.software.finalproject;
 
-import android.animation.AnimatorSet;
-import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
@@ -25,6 +22,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.cnsl.software.finalproject.board.BoardItem;
 import org.cnsl.software.finalproject.board.BoardItemAdapter;
+import org.cnsl.software.finalproject.contract.Main;
+import org.cnsl.software.finalproject.utils.Animation;
 import org.cnsl.software.finalproject.utils.HttpHelper;
 
 import java.net.MalformedURLException;
@@ -41,7 +40,7 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.OnFocusChange;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Main.View {
     String TAG = "test";
 
     Calendar timer = Calendar.getInstance();
@@ -68,30 +67,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public static void slideView(View view,
-                                 int currentHeight,
-                                 int newHeight) {
-
-        ValueAnimator slideAnimator = ValueAnimator
-                .ofInt(currentHeight, newHeight)
-                .setDuration(500);
-
-        /* We use an update listener which listens to each tick
-         * and manually updates the height of the view  */
-
-        slideAnimator.addUpdateListener(animation1 -> {
-            view.getLayoutParams().height = (Integer) animation1.getAnimatedValue();
-            view.requestLayout();
-        });
-
-        /*  We use an animationSet to play the animation  */
-
-        AnimatorSet animationSet = new AnimatorSet();
-        animationSet.setInterpolator(new AccelerateDecelerateInterpolator());
-        animationSet.play(slideAnimator);
-        animationSet.start();
-    }
-
     public void toggleView() {
         tlUrlHeader.measure(TextInputLayout.LayoutParams.MATCH_PARENT, TextInputLayout.LayoutParams.WRAP_CONTENT);
         final int measuredHeight = tlUrlHeader.getMeasuredHeight();
@@ -99,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "toggleUrlInput: " + measuredHeight);
 
         if (tlUrlHeader.getHeight() == 0) {
-            slideView(tlUrlHeader, 0, measuredHeight);
+            Animation.slideView(tlUrlHeader, 0, measuredHeight);
         } else {
-            slideView(tlUrlHeader, measuredHeight, 0);
+            Animation.slideView(tlUrlHeader, measuredHeight, 0);
         }
 
     }
