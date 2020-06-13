@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PostActivity"></activity>
+        <activity android:name=".PostActivity" />
         <activity android:name=".FindPasswordActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity" />
