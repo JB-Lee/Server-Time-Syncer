@@ -18,7 +18,7 @@ def dict_factory(cursor, row):
 # 게시판 요청 처리 클래스
 class Board:
 
-    # DB 초기화 클래스
+    # DB 초기화 메서드
     @staticmethod
     def init_table():
         with sqlite3.connect("project.db") as conn:
