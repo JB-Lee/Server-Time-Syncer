@@ -54,7 +54,7 @@ class Board:
 
                 return {"status": "Success", "content": results}
             except Exception as e:
-                return {"status": "Fail", "content": str(e)}
+                return {"status": "Fail", "content": {"msg": str(e)}}
 
     class Insert(Resource):
         @staticmethod
@@ -73,9 +73,9 @@ class Board:
                     sql = "INSERT INTO board(writer, category, content) VALUES(?, ?, ?)"
                     cur.execute(sql, (args['writer'], args['cat'], args['content']))
 
-                return {"status": "Success", "content": None}
+                return {"status": "Success", "content": {"None": None}}
             except Exception as e:
-                return {"status": "Fail", "content": str(e)}
+                return {"status": "Fail", "content": {"msg": str(e)}}
 
 
 class User:
@@ -130,10 +130,10 @@ class User:
 
                     cur.execute(sql, (args['id'], args['email'], User.get_pw_hash(args['pw'])))
 
-                return {"status": "Success", "content": None}
+                return {"status": "Success", "content": {"None": None}}
 
             except Exception as e:
-                return {"status": "Fail", "content": str(e)}
+                return {"status": "Fail", "content": {"msg": str(e)}}
 
     class Login(Resource):
         @staticmethod
@@ -159,7 +159,7 @@ class User:
                     return {"status": "Fail", "content": {"reason": "Login Fail"}}
 
             except Exception as e:
-                return {"status": "Fail", "content": str(e)}
+                return {"status": "Fail", "content": {"msg": str(e)}}
 
     class FindPassword(Resource):
         @staticmethod
@@ -178,7 +178,7 @@ class User:
 
                     result = cur.fetchone()
 
-                if result == 0:
+                if result[0] == 0:
                     return {"status": "Fail", "content": {"reason": "Invalid Account"}}
 
                 gen_pw = User.gen_password()
@@ -192,7 +192,7 @@ class User:
                 return {"status": "Success", "content": {"changed": gen_pw}}
 
             except Exception as e:
-                return {"status": "Fail", "content": str(e)}
+                return {"status": "Fail", "content": {"msg": str(e)}}
 
     class ChangePassword(Resource):
         @staticmethod
@@ -220,10 +220,10 @@ class User:
                     sql = "UPDATE user SET pw=? WHERE id=?"
                     cur.execute(sql, (User.get_pw_hash(args['pw']), args['id']))
 
-                return {"status": "Success", "content": None}
+                return {"status": "Success", "content": {"None": None}}
 
             except Exception as e:
-                return {"status": "Fail", "content": str(e)}
+                return {"status": "Fail", "content": {"msg": str(e)}}
 
     class Check(Resource):
         @staticmethod
@@ -236,7 +236,7 @@ class User:
                 return {"status": "Success", "content": {"result": User.is_exist_user(args['id'])}}
 
             except Exception as e:
-                return {"status": "Fail", "content": str(e)}
+                return {"status": "Fail", "content": {"msg": str(e)}}
 
 
 api.add_resource(Board.Insert, "/board/insert")
