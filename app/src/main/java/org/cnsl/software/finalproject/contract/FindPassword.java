@@ -1,12 +1,14 @@
 package org.cnsl.software.finalproject.contract;
 
-public interface Post {
+public interface FindPassword {
 
     interface View {
         void goPreviousActivity();
+
+        void setMsg(String msg);
     }
 
     interface Presenter {
-        void onPost(String content);
+        void onSubmit(String id, String email);
     }
 }

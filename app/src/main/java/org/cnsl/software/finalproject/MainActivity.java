@@ -1,5 +1,6 @@
 package org.cnsl.software.finalproject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -91,6 +93,11 @@ public class MainActivity extends AppCompatActivity implements Main.View {
     }
 
     @Override
+    public void scrollTop() {
+        rvBoard.scrollToPosition(0);
+    }
+
+    @Override
     public void setServerTime(Date date) {
         timer.setTime(date);
     }
@@ -114,11 +121,20 @@ public class MainActivity extends AppCompatActivity implements Main.View {
     }
 
     @Override
-    public void startPostActivity() {
-        Intent intent = new Intent(MainActivity.this, PostActivity.class);
-//        intent.putExtra("username");
-        intent.putExtra("hostname", tvHostName.getText());
-        startActivity(intent);
+    public void startPostActivity(String user) {
+        Intent intent = new Intent(MainActivity.this, PostActivity.class)
+                .putExtra("username", user)
+                .putExtra("hostname", String.valueOf(etUrl.getText()));
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK)
+            presenter.afterPostArticle(String.valueOf(etUrl.getText()));
+
     }
 
     @Override
@@ -154,7 +170,9 @@ public class MainActivity extends AppCompatActivity implements Main.View {
 
         ButterKnife.bind(this);
 
-        presenter = new MainPresenter(this);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+            presenter = new MainPresenter(this, extras.getString("id"), extras.getString("email"));
         adapter = new BoardItemAdapter(list);
 
         rvBoard.setLayoutManager(new LinearLayoutManager(this));

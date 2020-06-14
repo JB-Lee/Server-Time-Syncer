@@ -2,6 +2,11 @@ package org.cnsl.software.finalproject.models;
 
 import android.graphics.Color;
 
+import org.cnsl.software.finalproject.utils.RequestWrapper;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class SignUpModel {
     private final static String re1 = "^(?=.*[0-9]).+$";
     private final static String re2 = "^(?=.*[a-z]).+$";
@@ -14,25 +19,33 @@ public class SignUpModel {
         score += (pw.matches(re2) ? 26 : 0);
         score += (pw.matches(re3) ? 26 : 0);
         score += (pw.matches(re4) ? 8 : 0);
-        return (int)(Math.pow(score, pw.length())/40000000000L);
+        return (int) (Math.pow(score, pw.length()) / 40000000000L);
     }
 
     public boolean passwordValid(int risk) {
         return risk / (60 * 60) > 1;
     }
 
-    public boolean doSignUp(String id, String pw) {
-        //계정 생성
-        return true;
+    public void doSignUp(String id, String email, String pw, RequestWrapper.ApiListener listener) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("id", id);
+        param.put("email", email);
+        param.put("pw", pw);
+        RequestWrapper.doRequest(
+                "http://192.168.0.18:5000/user/signup",
+                param,
+                listener
+        );
     }
 
-    public boolean chkId(String id) {
-        //id 중복 검사
-        return true;
-    }
-
-    public boolean chkEmail(String email) {
-        return true;
+    public void chkId(String id, RequestWrapper.ApiListener listener) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("id", id);
+        RequestWrapper.doRequest(
+                "http://192.168.0.18:5000/user/check",
+                param,
+                listener
+        );
     }
 
     public String getCrackTime(int risk) {
@@ -89,4 +102,5 @@ public class SignUpModel {
 
         return color;
     }
+
 }

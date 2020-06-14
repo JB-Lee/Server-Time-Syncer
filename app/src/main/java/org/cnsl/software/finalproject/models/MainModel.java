@@ -2,14 +2,29 @@ package org.cnsl.software.finalproject.models;
 
 import org.cnsl.software.finalproject.utils.Async;
 import org.cnsl.software.finalproject.utils.HttpHelper;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.cnsl.software.finalproject.utils.RequestWrapper;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MainModel {
+
+    String id;
+    String email;
+
+    public MainModel(String id, String email) {
+        this.id = id;
+        this.email = email;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 
     public void doServerTimeLookup(String url, ServerTimeListener listener) {
 
@@ -34,29 +49,17 @@ public class MainModel {
                 .execute();
     }
 
-    public void doLookup(Map<String, Object> param, ApiListener listener) {
-        HttpHelper.asyncRequest(
-                "http://192.168.0.18:5000/board/lookup",
-                HttpHelper.Method.GET,
-                param,
-                new HttpHelper.ResponseListener() {
-                    @Override
-                    public void onSuccess(JSONObject json) {
-                        try {
-                            if (json.getString("status").equals("Success"))
-                                listener.onSuccess(json.getJSONArray("content"));
-                            else
-                                listener.onError(json.getString("content"));
-                        } catch (JSONException e) {
-                            listener.onError(e.toString());
-                        }
-                    }
+    public void doLookup(String category, RequestWrapper.ListApiListener listener) {
+        Map<String, Object> param = new HashMap<>();
 
-                    @Override
-                    public void onError(int code, String message) {
-                        listener.onError(message);
-                    }
-                }
+        if (category != null)
+            param.put("cat", category);
+        param.put("nums", 20);
+
+        RequestWrapper.doRequest(
+                "http://192.168.0.18:5000/board/lookup",
+                param,
+                listener
         );
     }
 
@@ -66,9 +69,4 @@ public class MainModel {
         void onError(Exception e);
     }
 
-    public interface ApiListener {
-        void onSuccess(JSONArray json);
-
-        void onError(String msg);
-    }
 }

@@ -6,7 +6,9 @@ public interface Login {
         void showForgotPassword(boolean show);
         void clearId();
         void clearPw();
-        void startMainActivity();
+
+        void startMainActivity(String id, String email);
+
         void startSignUpActivity();
         void startFindPasswordActivity();
     }

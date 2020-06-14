@@ -2,6 +2,7 @@ package org.cnsl.software.finalproject;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.webkit.URLUtil;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -9,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.cnsl.software.finalproject.board.BoardItem;
 import org.cnsl.software.finalproject.contract.Main;
 import org.cnsl.software.finalproject.models.MainModel;
+import org.cnsl.software.finalproject.utils.RequestWrapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,10 +19,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
 public class MainPresenter implements Main.Presenter {
@@ -28,9 +28,9 @@ public class MainPresenter implements Main.Presenter {
     Main.View mainView;
     MainModel mainModel;
 
-    public MainPresenter(Main.View mainView) {
+    public MainPresenter(Main.View mainView, String id, String email) {
         this.mainView = mainView;
-        this.mainModel = new MainModel();
+        this.mainModel = new MainModel(id, email);
     }
 
     @Override
@@ -58,14 +58,19 @@ public class MainPresenter implements Main.Presenter {
             refreshBoard();
     }
 
+    @Override
+    public void afterPostArticle(String category) {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshBoard(category);
+            }
+        }, 3000);
+    }
+
     public void refreshBoard(String category) {
-        Map<String, Object> param = new HashMap<>();
 
-        if (category != null)
-            param.put("cat", category);
-        param.put("nums", 20);
-
-        mainModel.doLookup(param, new MainModel.ApiListener() {
+        mainModel.doLookup(category, new RequestWrapper.ListApiListener() {
             @Override
             public void onSuccess(JSONArray json) {
                 try {
@@ -82,7 +87,10 @@ public class MainPresenter implements Main.Presenter {
                         ));
 
                     }
-                    new Handler(Looper.getMainLooper()).post(() -> mainView.boardSetItem(list));
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        mainView.boardSetItem(list);
+                        mainView.scrollTop();
+                    });
 
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
@@ -90,7 +98,14 @@ public class MainPresenter implements Main.Presenter {
             }
 
             @Override
+            public void onFail(JSONObject json) {
+                Log.d("fail", json.toString());
+
+            }
+
+            @Override
             public void onError(String msg) {
+                Log.d("error", msg);
             }
         });
     }
@@ -113,6 +128,6 @@ public class MainPresenter implements Main.Presenter {
 
     @Override
     public void onPostArticle() {
-        mainView.startPostActivity();
+        mainView.startPostActivity(mainModel.getId());
     }
 }

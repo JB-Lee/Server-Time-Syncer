@@ -1,15 +1,22 @@
 package org.cnsl.software.finalproject;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Patterns;
 
 import org.cnsl.software.finalproject.contract.SignUp;
 import org.cnsl.software.finalproject.models.SignUpModel;
+import org.cnsl.software.finalproject.utils.RequestWrapper;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class SignUpPresenter implements SignUp.Presenter {
 
     SignUp.View signUpView;
     SignUpModel signUpModel;
+
+    boolean idChecked = false;
 
     public SignUpPresenter(SignUp.View signUpView) {
         this.signUpView = signUpView;
@@ -17,12 +24,46 @@ public class SignUpPresenter implements SignUp.Presenter {
     }
 
     @Override
+    public void onIdChanged(CharSequence s, int start, int before, int count) {
+        idChecked = false;
+        signUpView.setUserMsg("");
+    }
+
+    @Override
+    public void onCheckId(String id) {
+        signUpModel.chkId(id, new RequestWrapper.ApiListener() {
+            @Override
+            public void onSuccess(JSONObject json) {
+                try {
+                    idChecked = !json.getBoolean("result");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (!idChecked)
+                    new Handler(Looper.getMainLooper()).post(() -> signUpView.setUserMsg("이미 존재하는 ID 입니다."));
+                else
+                    new Handler(Looper.getMainLooper()).post(() -> signUpView.setUserMsg("확인 완료"));
+            }
+
+            @Override
+            public void onFail(JSONObject json) {
+
+            }
+
+            @Override
+            public void onError(String msg) {
+
+            }
+        });
+    }
+
+    @Override
     public void onSignUp(String id, String email, String pw, String pw2) {
 
         boolean pass = true;
 
-        if (!signUpModel.chkId(id)) {
-            signUpView.setUserMsg("이미 존재하는 ID 입니다.");
+        if (!idChecked) {
+            signUpView.setUserMsg("ID 체크를 진행하세요.");
             pass = false;
         } else {
             signUpView.setUserMsg("");
@@ -30,9 +71,6 @@ public class SignUpPresenter implements SignUp.Presenter {
 
         if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             signUpView.setEmailMsg("올바른 Email이 아닙니다.");
-            pass = false;
-        } else if (!signUpModel.chkEmail(email)) {
-            signUpView.setEmailMsg("이미 등록된 Email 입니다.");
             pass = false;
         } else {
             signUpView.setEmailMsg("");
@@ -46,9 +84,22 @@ public class SignUpPresenter implements SignUp.Presenter {
         }
 
         if (pass) {
-            if (signUpModel.doSignUp(id, pw)) {
-                signUpView.goPreviousActivity();
-            }
+            signUpModel.doSignUp(id, email, pw, new RequestWrapper.ApiListener() {
+                @Override
+                public void onSuccess(JSONObject json) {
+                    signUpView.goPreviousActivity();
+                }
+
+                @Override
+                public void onFail(JSONObject json) {
+                    signUpView.setMsg("이미 존재하는 계정입니다.");
+                }
+
+                @Override
+                public void onError(String msg) {
+                    signUpView.setMsg(msg);
+                }
+            });
         }
     }
 

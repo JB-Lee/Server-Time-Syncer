@@ -68,13 +68,6 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.View
 
         diffResult.dispatchUpdatesTo(BoardItemAdapter.this);
 
-//        new Handler(Looper.getMainLooper()).post(new Runnable() {
-//            @Override
-//            public void run() {
-//                diffResult.dispatchUpdatesTo(BoardItemAdapter.this);
-//            }
-//        });
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

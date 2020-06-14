@@ -77,8 +77,10 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
     }
 
     @Override
-    public void startMainActivity() {
+    public void startMainActivity(String id, String email) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("email", email);
         startActivity(intent);
     }
 

@@ -26,21 +26,45 @@
             android:textColor="@color/colorText"
             android:textSize="24sp" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColorHint="@color/colorShade"
-            app:endIconMode="clear_text"
-            app:endIconTint="@color/colorTextLighter">
+            android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_signup_id"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="ID"
-                android:inputType="text"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="3"
+                    android:textColorHint="@color/colorShade"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/colorTextLighter">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_signup_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="ID"
+                        android:inputType="text"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_signup_check"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="중복 확인"
+                    android:textColor="@color/colorPrimary" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_signup_user_message"
@@ -51,8 +75,8 @@
                 android:textColor="@color/colorHighlight"
                 android:textSize="12sp" />
 
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -150,16 +174,32 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_signup_sign_up"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/colorDisable"
-            android:elevation="10dp"
-            android:enabled="false"
-            android:text="@string/sign_up_activity_submit"
-            android:textColor="@color/colorPrimary" />
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_signup_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorHighlight"
+                android:textSize="12sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_signup_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorDisable"
+                android:elevation="10dp"
+                android:enabled="false"
+                android:text="@string/sign_up_activity_submit"
+                android:textColor="@color/colorPrimary" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

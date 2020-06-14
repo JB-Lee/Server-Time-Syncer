@@ -22,7 +22,9 @@ public interface Main {
 
         void setHostName(String hostname);
 
-        void startPostActivity();
+        void startPostActivity(String user);
+
+        void scrollTop();
     }
 
     interface Presenter {
@@ -33,5 +35,7 @@ public interface Main {
         void onPostArticle();
 
         void onViewCreate();
+
+        void afterPostArticle(String category);
     }
 }

@@ -1,44 +1,30 @@
 package org.cnsl.software.finalproject.models;
 
-import org.cnsl.software.finalproject.utils.HttpHelper;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.cnsl.software.finalproject.utils.RequestWrapper;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class PostModel {
+    String username;
+    String hostname;
 
-    public void doPost(Map<String, Object> param, PostListener listener) {
+    public PostModel(String username, String hostname) {
+        this.username = username;
+        this.hostname = hostname;
+    }
 
-        HttpHelper.request(
+    public void doPost(String content, RequestWrapper.ApiListener listener) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("writer", username);
+        param.put("cat", hostname);
+        param.put("content", content);
+
+        RequestWrapper.doRequest(
                 "http://192.168.0.18:5000/board/insert",
-                HttpHelper.Method.GET,
                 param,
-                new HttpHelper.ResponseListener() {
-                    @Override
-                    public void onSuccess(JSONObject json) {
-                        try {
-                            if (json.getString("status").equals("Success"))
-                                listener.onSuccess();
-                            else
-                                listener.onError(json.getString("content"));
-                        } catch (JSONException e) {
-                            listener.onError(e.toString());
-                        }
-                    }
-
-                    @Override
-                    public void onError(int code, String message) {
-                        listener.onError(message);
-                    }
-                }
+                listener
         );
-
     }
 
-    public interface PostListener {
-        void onSuccess();
-
-        void onError(String msg);
-    }
 }

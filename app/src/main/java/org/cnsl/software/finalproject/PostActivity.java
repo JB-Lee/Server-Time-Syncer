@@ -1,5 +1,6 @@
 package org.cnsl.software.finalproject;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class PostActivity extends AppCompatActivity implements Post.View {
 
     @Override
     public void goPreviousActivity() {
+        setResult(Activity.RESULT_OK);
         finish();
     }
 
@@ -40,14 +42,15 @@ public class PostActivity extends AppCompatActivity implements Post.View {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            presenter = new PostPresenter(this, extras.getString("username"), extras.getString("hostname"));
             tvHostname.setText(getString(R.string.common_hostname_placeholder, extras.getString("hostname")));
+            tvWriter.setText(extras.getString("username"));
         }
-        presenter = new PostPresenter(this);
     }
 
     @OnClick(R.id.btn_post_post)
     public void onPostClick() {
-        presenter.onPost(String.valueOf(tvWriter.getText()), String.valueOf(tvHostname.getText()), String.valueOf(etContent.getText()));
+        presenter.onPost(String.valueOf(etContent.getText()));
 
     }
 }

@@ -1,6 +1,8 @@
 package org.cnsl.software.finalproject.utils;
 
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
 import java.util.concurrent.Callable;
 
@@ -60,6 +62,10 @@ public class Async {
             if (callback != null)
                 callback.onResult(result);
         }
+    }
+
+    public static void syncRunTask(Runnable runnable) {
+        new Handler(Looper.getMainLooper()).post(runnable);
     }
 
 }

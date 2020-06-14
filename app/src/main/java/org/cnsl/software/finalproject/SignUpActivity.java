@@ -31,8 +31,12 @@ public class SignUpActivity extends AppCompatActivity implements SignUp.View {
     TextInputEditText etEmail;
     @BindView(R.id.btn_signup_sign_up)
     AppCompatButton btnSignUp;
+    @BindView(R.id.btn_signup_check)
+    AppCompatButton btnCheck;
     @BindView(R.id.tv_signup_risk_msg)
     AppCompatTextView tvRiskMsg;
+    @BindView(R.id.tv_signup_msg)
+    AppCompatTextView tvMsg;
     @BindView(R.id.tv_signup_password_msg)
     AppCompatTextView tvPassMsg;
     @BindView(R.id.tv_signup_email_message)
@@ -64,6 +68,16 @@ public class SignUpActivity extends AppCompatActivity implements SignUp.View {
         presenter.onPasswordChanged(s, start, before, count);
     }
 
+    @OnTextChanged(R.id.et_signup_id)
+    public void onIdChanged(CharSequence s, int start, int before, int count) {
+        presenter.onIdChanged(s, start, before, count);
+    }
+
+    @Override
+    public void setMsg(String msg) {
+        tvMsg.setText(msg);
+    }
+
     @OnClick(R.id.btn_signup_sign_up)
     public void onSignUp(View view) {
         presenter.onSignUp(
@@ -72,6 +86,11 @@ public class SignUpActivity extends AppCompatActivity implements SignUp.View {
                 String.valueOf(etPass.getText()),
                 String.valueOf(etChkPass.getText())
         );
+    }
+
+    @OnClick(R.id.btn_signup_check)
+    public void onCheckId(View view) {
+        presenter.onCheckId(String.valueOf(etId.getText()));
     }
 
     @Override
