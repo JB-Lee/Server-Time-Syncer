@@ -1,5 +1,6 @@
 package org.cnsl.software.finalproject;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 
@@ -107,9 +108,9 @@ public class SignUpActivity extends AppCompatActivity implements SignUp.View {
     public void toggleButton(boolean enable) {
         btnSignUp.setEnabled(enable);
         if (enable) {
-            btnSignUp.setBackgroundColor(color_highlight);
+            btnSignUp.setBackgroundTintList(ColorStateList.valueOf(color_highlight));
         } else {
-            btnSignUp.setBackgroundColor(color_disable);
+            btnSignUp.setBackgroundTintList(ColorStateList.valueOf(color_disable));
         }
     }
 }

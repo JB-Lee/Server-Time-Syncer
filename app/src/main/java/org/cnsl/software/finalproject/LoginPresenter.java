@@ -23,7 +23,7 @@ public class LoginPresenter implements Login.Presenter {
 
     @Override
     public void onFindPassword() {
-
+        loginView.startFindPasswordActivity();
     }
 
     @Override

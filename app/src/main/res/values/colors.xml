@@ -7,4 +7,9 @@
     <color name="colorShade">#888</color>
     <color name="colorDisable">#777</color>
     <color name="colorText">#333</color>
+    <color name="colorTextLight">#444</color>
+    <color name="colorTextLighter">#666</color>
+
+    <color name="colorWhite">#FFF</color>
+    <color name="colorWarnRed">#C33</color>
 </resources>

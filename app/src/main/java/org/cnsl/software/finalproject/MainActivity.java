@@ -1,5 +1,6 @@
 package org.cnsl.software.finalproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -28,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindAnim;
@@ -112,6 +114,14 @@ public class MainActivity extends AppCompatActivity implements Main.View {
     }
 
     @Override
+    public void startPostActivity() {
+        Intent intent = new Intent(MainActivity.this, PostActivity.class);
+//        intent.putExtra("username");
+        intent.putExtra("hostname", tvHostName.getText());
+        startActivity(intent);
+    }
+
+    @Override
     public void toggleFabButton() {
         if (fabOpened) {
             liWrite.startAnimation(animFabClose);
@@ -128,6 +138,11 @@ public class MainActivity extends AppCompatActivity implements Main.View {
             fabOpenUrl.setClickable(true);
             fabOpened = true;
         }
+    }
+
+    @Override
+    public void boardSetItem(List<BoardItem> list) {
+        adapter.setNewItems(list);
     }
 
     @Override
@@ -161,7 +176,9 @@ public class MainActivity extends AppCompatActivity implements Main.View {
         );
 
 //        스와이프 리프레시
-        srlSwipe.setOnRefreshListener(() -> presenter.onBoardRefresh(srlSwipe));
+        srlSwipe.setOnRefreshListener(() -> presenter.onBoardRefresh(srlSwipe, String.valueOf(etUrl.getText())));
+
+        presenter.onViewCreate();
 
     }
 

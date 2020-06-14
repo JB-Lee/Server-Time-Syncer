@@ -2,8 +2,12 @@ package org.cnsl.software.finalproject.models;
 
 import org.cnsl.software.finalproject.utils.Async;
 import org.cnsl.software.finalproject.utils.HttpHelper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.Map;
 
 public class MainModel {
 
@@ -30,9 +34,41 @@ public class MainModel {
                 .execute();
     }
 
+    public void doLookup(Map<String, Object> param, ApiListener listener) {
+        HttpHelper.asyncRequest(
+                "http://192.168.0.18:5000/board/lookup",
+                HttpHelper.Method.GET,
+                param,
+                new HttpHelper.ResponseListener() {
+                    @Override
+                    public void onSuccess(JSONObject json) {
+                        try {
+                            if (json.getString("status").equals("Success"))
+                                listener.onSuccess(json.getJSONArray("content"));
+                            else
+                                listener.onError(json.getString("content"));
+                        } catch (JSONException e) {
+                            listener.onError(e.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code, String message) {
+                        listener.onError(message);
+                    }
+                }
+        );
+    }
+
     public interface ServerTimeListener {
         void onSuccess(String hostname, Date date);
 
         void onError(Exception e);
+    }
+
+    public interface ApiListener {
+        void onSuccess(JSONArray json);
+
+        void onError(String msg);
     }
 }

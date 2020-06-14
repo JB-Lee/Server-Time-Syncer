@@ -5,6 +5,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.cnsl.software.finalproject.board.BoardItem;
 
 import java.util.Date;
+import java.util.List;
 
 public interface Main {
 
@@ -15,16 +16,22 @@ public interface Main {
 
         void boardAddItem(BoardItem item);
 
+        void boardSetItem(List<BoardItem> list);
+
         void setServerTime(Date date);
 
         void setHostName(String hostname);
+
+        void startPostActivity();
     }
 
     interface Presenter {
         void onServerTimeLookup(String url);
 
-        void onBoardRefresh(SwipeRefreshLayout swipe);
+        void onBoardRefresh(SwipeRefreshLayout swipe, String hostname);
 
         void onPostArticle();
+
+        void onViewCreate();
     }
 }

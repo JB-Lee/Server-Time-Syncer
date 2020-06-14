@@ -86,6 +86,60 @@ public class HttpHelper {
         http.disconnect();
     }
 
+    private static String _simpleRequest(String url, Method method, Map<String, Object> params) throws IOException {
+        String param = null;
+
+        if (params != null) {
+            StringBuilder sb = new StringBuilder();
+            for (String key : params.keySet()) {
+                if (sb.length() > 0)
+                    sb.append("&");
+                sb.append(URLEncoder.encode(key, "UTF-8"));
+                sb.append("=");
+                sb.append(URLEncoder.encode(String.valueOf(params.get(key)), "UTF-8"));
+
+            }
+            param = sb.toString();
+        }
+
+        if (Method.GET.equals(method)) {
+            if (url.contains("?"))
+                url += "&" + param;
+            else
+                url += "?" + param;
+        }
+
+        URL u = new URL(url);
+        HttpURLConnection http = (HttpURLConnection) u.openConnection();
+        http.setRequestMethod(method.toString());
+
+        if (Method.POST.equals(method)) {
+            http.setDoOutput(true);
+            if (param != null) {
+                http.getOutputStream().write(param.getBytes(StandardCharsets.UTF_8));
+            }
+        }
+
+        int code = http.getResponseCode();
+
+        if (code == 200) {
+            StringBuilder data = new StringBuilder();
+            String tmp;
+            BufferedReader br = new BufferedReader(new InputStreamReader(http.getInputStream()));
+            while ((tmp = br.readLine()) != null)
+                data.append(tmp);
+            br.close();
+
+            http.disconnect();
+
+            return data.toString();
+        } else {
+            http.disconnect();
+            return http.getResponseMessage();
+        }
+
+    }
+
     public static void request(String url, Method method, Map<String, Object> params, ResponseListener listener) {
         new Thread() {
             public void run() {
@@ -96,6 +150,17 @@ public class HttpHelper {
                 }
             }
         }.start();
+    }
+
+    public static void asyncRequest(String url, Method method, Map<String, Object> params, ResponseListener listener) {
+        new Async.Executor<Void>()
+                .setCallable(() -> {
+                    String msg = _simpleRequest(url, method, params);
+                    listener.onSuccess(new JSONObject(msg));
+                    return null;
+                })
+                .execute();
+
     }
 
     public static HttpURLConnection urlOpen(String url) throws IOException {

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.cnsl.software.finalproject.R;
@@ -59,8 +60,21 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.View
     }
 
     public void setNewItems(List<BoardItem> list) {
-        boardItems = list;
-        notifyDataSetChanged();
+        final BoardItemDiffCallback diffCallback = new BoardItemDiffCallback(this.boardItems, list);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.boardItems.clear();
+        this.boardItems.addAll(list);
+
+        diffResult.dispatchUpdatesTo(BoardItemAdapter.this);
+
+//        new Handler(Looper.getMainLooper()).post(new Runnable() {
+//            @Override
+//            public void run() {
+//                diffResult.dispatchUpdatesTo(BoardItemAdapter.this);
+//            }
+//        });
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

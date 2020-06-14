@@ -5,23 +5,16 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class TimeFormatter {
-
-    private final static int SEC = 60;
-    private final static int MIN = 60;
-    private final static int HOUR = 24;
-
     public static String formatTime(long epochSecond) {
         String formattedTime = "";
 
         Calendar date = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
         date.setTimeInMillis(epochSecond * 1000);
 
         SimpleDateFormat sdf;
 
-        long now = (System.currentTimeMillis() / 1000);
-        long diffTime = now - epochSecond;
-
-        int diffDay = (int) (diffTime / (SEC * MIN * HOUR));
+        int diffDay = today.get(Calendar.DAY_OF_YEAR) - date.get(Calendar.DAY_OF_YEAR);
 
         if (diffDay < 3) {
             if (diffDay == 0)
@@ -46,4 +39,5 @@ public class TimeFormatter {
 
         return formattedTime;
     }
+
 }

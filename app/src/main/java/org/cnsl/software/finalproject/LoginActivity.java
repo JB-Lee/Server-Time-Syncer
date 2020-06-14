@@ -56,6 +56,11 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
         presenter.onSignUp();
     }
 
+    @OnClick(R.id.tv_login_forgot_password)
+    public void findPassword(View view) {
+        presenter.onFindPassword();
+    }
+
     @Override
     public void showForgotPassword(boolean show) {
         tvFindPass.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
@@ -85,6 +90,7 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
 
     @Override
     public void startFindPasswordActivity() {
-
+        Intent intent = new Intent(LoginActivity.this, FindPasswordActivity.class);
+        startActivity(intent);
     }
 }

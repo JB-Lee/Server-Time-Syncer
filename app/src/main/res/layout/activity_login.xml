@@ -1,80 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/colorWhite"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".LoginActivity">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:background="@color/colorPrimary"
         android:layout_margin="10dp"
-        android:padding="15dp"
-        android:elevation="10dp">
+        android:background="@color/colorWhite"
+        android:elevation="10dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="15dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/login_activity_login"
             android:textColor="@color/colorText"
-            android:textSize="24sp"/>
+            android:textSize="24sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:textColorHint="@color/colorShade"
-            android:layout_marginTop="5dp">
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/colorTextLighter">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_login_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="ID"
                 android:inputType="text"
-                android:textSize="16sp"
-                android:hint="ID"/>
+                android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:textColorHint="@color/colorShade"
-            android:layout_marginTop="10dp">
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/colorTextLighter">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Password"
                 android:inputType="textPassword"
-                android:textSize="16sp"
-                android:hint="Password"/>
+                android:textSize="16sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_login_forgot_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/login_activity_password_forgot"
-                android:visibility="invisible"
+                android:textAlignment="viewStart"
                 android:textColor="@color/colorHighlight"
-                android:textAlignment="viewStart"/>
+                android:visibility="invisible" />
 
         </com.google.android.material.textfield.TextInputLayout>
-        
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_login_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@color/colorHighlight"
-            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/colorHighlight"
             android:elevation="10dp"
-            android:text="@string/login_activity_login"/>
+            android:text="@string/login_activity_login"
+            android:textColor="@color/colorPrimary" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_login_sign_up"
@@ -83,7 +89,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/login_activity_sign_up"
             android:textAlignment="textStart"
-            android:textColor="@color/colorHighlight"/>
+            android:textColor="@color/colorHighlight" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
