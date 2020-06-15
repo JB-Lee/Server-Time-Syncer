@@ -17,6 +17,12 @@ def dict_factory(cursor, row):
     return d
 
 
+class Hello(Resource):
+    @staticmethod
+    def get():
+        return {"status": "Success", "content": {"msg": "ServerTimeSyncer"}}
+
+
 class Board:
 
     @staticmethod
@@ -239,6 +245,8 @@ class User:
                 return {"status": "Fail", "content": {"msg": str(e)}}
 
 
+api.add_resource(Hello, "/hello")
+
 api.add_resource(Board.Insert, "/board/insert")
 api.add_resource(Board.Lookup, "/board/lookup")
 
@@ -252,4 +260,4 @@ api.add_resource(User.FindPassword, "/user/password/find")
 if __name__ == "__main__":
     Board.init_table()
     User.init_table()
-    app.run(host='192.168.0.18', debug=True)
+    app.run(host='0.0.0.0', debug=True)
