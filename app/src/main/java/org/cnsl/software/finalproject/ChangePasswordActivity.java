@@ -21,20 +21,20 @@ import butterknife.OnTextChanged;
 
 public class ChangePasswordActivity extends AppCompatActivity implements ChangePassword.View {
 
-    @BindView(R.id.et_changepw_password)
+    @BindView(R.id.et_changepass_password)
     TextInputEditText etPass;
-    @BindView(R.id.et_changepw_confirm_password)
+    @BindView(R.id.et_changepass_confirm_password)
     TextInputEditText etChkPass;
 
-    @BindView(R.id.tv_changepw_password_msg)
+    @BindView(R.id.tv_changepass_password_msg)
     AppCompatTextView tvPwMsg;
-    @BindView(R.id.tv_changepw_risk_msg)
+    @BindView(R.id.tv_changepass_risk_msg)
     AppCompatTextView tvRiskMsg;
 
-    @BindView(R.id.img_changepw_risk_icon)
+    @BindView(R.id.img_changepass_risk_icon)
     AppCompatImageView imgRiskIcon;
 
-    @BindView(R.id.btn_changepw_submit)
+    @BindView(R.id.btn_changepass_submit)
     AppCompatButton btnSubmit;
 
     @BindColor(R.color.colorHighlight)
@@ -92,12 +92,12 @@ public class ChangePasswordActivity extends AppCompatActivity implements ChangeP
         tvPwMsg.setText(msg);
     }
 
-    @OnTextChanged(R.id.et_changepw_password)
+    @OnTextChanged(R.id.et_changepass_password)
     public void onPasswordChanged(CharSequence s, int start, int before, int count) {
         presenter.onPasswordChanged(s, start, before, count);
     }
 
-    @OnClick(R.id.btn_changepw_submit)
+    @OnClick(R.id.btn_changepass_submit)
     public void onChangePassword(View view) {
         presenter.onChangePassword(
                 String.valueOf(etPass.getText()),

@@ -23,10 +23,6 @@ public class HttpHelper {
 
     private static final String TAG = HttpHelper.class.getSimpleName();
 
-    public enum Method {
-        GET, POST
-    }
-
     private static void _request(String url, Method method, Map<String, Object> params, ResponseListener listener) throws IOException {
         String param = null;
 
@@ -131,10 +127,10 @@ public class HttpHelper {
 
             http.disconnect();
 
-            return new Pair<Boolean, Object>(true, data.toString());
+            return new Pair<>(true, data.toString());
         } else {
             http.disconnect();
-            return new Pair<Boolean, Object>(false, new Pair<Integer, String>(code, http.getResponseMessage()));
+            return new Pair<>(false, new Pair<>(code, http.getResponseMessage()));
         }
 
     }
@@ -178,14 +174,6 @@ public class HttpHelper {
         }.start();
     }
 
-    public interface ResponseListener {
-        void onSuccess(JSONObject json);
-
-        void onFail(int code, String message);
-
-        void onError(Exception e);
-    }
-
     public static HttpURLConnection urlOpen(String url) throws IOException {
         URL u = new URL(url);
         return urlOpen(u);
@@ -195,6 +183,18 @@ public class HttpHelper {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         return conn;
+    }
+
+    public enum Method {
+        GET, POST
+    }
+
+    public interface ResponseListener {
+        void onSuccess(JSONObject json);
+
+        void onFail(int code, String message);
+
+        void onError(Exception e);
     }
 
     public static class Connection {
@@ -210,7 +210,7 @@ public class HttpHelper {
             }
         }
 
-        public Date getServerTime(){
+        public Date getServerTime() {
             try {
                 String timeString = conn.getHeaderField("Date");
                 SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);

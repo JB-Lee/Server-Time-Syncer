@@ -38,34 +38,26 @@ public class LoginPresenter implements Login.Presenter {
                         });
                     } else {
                         serverChecked = false;
-                        Async.syncRunTask(() -> {
-                            loginView.setServerMsg("연동 실패");
-                        });
+                        Async.syncRunTask(() -> loginView.setServerMsg("연동 실패"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     serverChecked = false;
-                    Async.syncRunTask(() -> {
-                        loginView.setServerMsg("연동 실패.");
-                    });
+                    Async.syncRunTask(() -> loginView.setServerMsg("연동 실패."));
                 }
             }
 
             @Override
             public void onFail(JSONObject json) {
                 serverChecked = false;
-                Async.syncRunTask(() -> {
-                    loginView.setServerMsg("연동 실패.");
-                });
+                Async.syncRunTask(() -> loginView.setServerMsg("연동 실패."));
 
             }
 
             @Override
             public void onError(String msg) {
                 serverChecked = false;
-                Async.syncRunTask(() -> {
-                    loginView.setServerMsg("연동 실패.");
-                });
+                Async.syncRunTask(() -> loginView.setServerMsg("연동 실패."));
 
             }
         });

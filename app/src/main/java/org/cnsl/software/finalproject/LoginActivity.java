@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
     }
 
     @OnClick(R.id.btn_login_login)
-    public void login(View view) {
+    public void login() {
         presenter.onLogin(
                 String.valueOf(etId.getText()),
                 String.valueOf(etPass.getText())
@@ -67,12 +67,12 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
     }
 
     @OnClick(R.id.tv_login_sign_up)
-    public void signUp(View view) {
+    public void signUp() {
         presenter.onSignUp();
     }
 
     @OnClick(R.id.tv_login_forgot_password)
-    public void findPassword(View view) {
+    public void findPassword() {
         presenter.onFindPassword();
     }
 

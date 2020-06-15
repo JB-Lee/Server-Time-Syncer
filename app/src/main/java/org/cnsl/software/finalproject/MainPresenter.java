@@ -61,12 +61,7 @@ public class MainPresenter implements Main.Presenter {
 
     @Override
     public void afterPostArticle(String category) {
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refreshBoard(category);
-            }
-        }, 3000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> refreshBoard(category), 3000);
     }
 
     public void refreshBoard(String category) {
@@ -80,12 +75,15 @@ public class MainPresenter implements Main.Presenter {
                     int offset = TimeZone.getDefault().getRawOffset() / 1000;
                     for (int i = 0; i < json.length(); i++) {
                         JSONObject j = (JSONObject) json.get(i);
-                        list.add(new BoardItem(
-                                j.getString("writer"),
-                                j.getString("category"),
-                                j.getString("content"),
-                                (int) (df.parse(j.getString("timestamp")).getTime() / 1000) + offset
-                        ));
+                        Date date = df.parse(j.getString("timestamp"));
+                        if (date != null) {
+                            list.add(new BoardItem(
+                                    j.getString("writer"),
+                                    j.getString("category"),
+                                    j.getString("content"),
+                                    (int) (date.getTime() / 1000) + offset
+                            ));
+                        }
 
                     }
                     Async.syncRunTask(() -> {

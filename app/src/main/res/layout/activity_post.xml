@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".PostActivity">
@@ -12,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorWhite"
         android:elevation="10dp"
         android:orientation="vertical"
         android:padding="15dp">
@@ -25,14 +26,12 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_post_writer"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="writer" />
+                android:layout_height="wrap_content" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_post_hostname"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="#naver.com" />
+                android:layout_height="wrap_content" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -59,7 +58,9 @@
             android:id="@+id/btn_post_post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorHighlight" />
+            android:backgroundTint="@color/colorHighlight"
+            android:text="@string/common_submit"
+            android:textColor="@color/colorWhite" />
 
     </LinearLayout>
 

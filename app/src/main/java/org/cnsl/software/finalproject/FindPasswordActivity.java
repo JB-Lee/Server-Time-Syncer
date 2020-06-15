@@ -17,18 +17,18 @@ import butterknife.OnClick;
 
 public class FindPasswordActivity extends AppCompatActivity implements FindPassword.View {
 
-    @BindView(R.id.et_findpassword_email)
+    @BindView(R.id.et_findpass_email)
     TextInputEditText etEmail;
-    @BindView(R.id.et_findpassword_id)
+    @BindView(R.id.et_findpass_id)
     TextInputEditText etId;
-    @BindView(R.id.tv_findpassword_msg)
+    @BindView(R.id.tv_findpass_msg)
     AppCompatTextView tvMsg;
-    @BindView(R.id.btn_findpassword_submit)
+    @BindView(R.id.btn_findpass_submit)
     AppCompatButton btnSubmit;
 
     FindPassword.Presenter presenter;
 
-    @OnClick(R.id.btn_findpassword_submit)
+    @OnClick(R.id.btn_findpass_submit)
     public void onClickSubmit(View view) {
         presenter.onSubmit(String.valueOf(etId.getText()), String.valueOf(etEmail.getText()));
     }
