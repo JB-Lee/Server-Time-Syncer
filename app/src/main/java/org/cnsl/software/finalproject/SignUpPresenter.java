@@ -1,12 +1,11 @@
 package org.cnsl.software.finalproject;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Patterns;
 
 import org.cnsl.software.finalproject.contract.SignUp;
 import org.cnsl.software.finalproject.models.SignUpModel;
+import org.cnsl.software.finalproject.utils.Async;
 import org.cnsl.software.finalproject.utils.RequestWrapper;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,9 +39,9 @@ public class SignUpPresenter implements SignUp.Presenter {
                     e.printStackTrace();
                 }
                 if (!idChecked)
-                    new Handler(Looper.getMainLooper()).post(() -> signUpView.setUserMsg("이미 존재하는 ID 입니다."));
+                    Async.syncRunTask(() -> signUpView.setUserMsg("이미 존재하는 ID 입니다."));
                 else
-                    new Handler(Looper.getMainLooper()).post(() -> signUpView.setUserMsg("확인 완료"));
+                    Async.syncRunTask(() -> signUpView.setUserMsg("확인 완료"));
             }
 
             @Override

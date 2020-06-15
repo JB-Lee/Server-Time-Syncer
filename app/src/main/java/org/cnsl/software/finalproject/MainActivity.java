@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements Main.View {
     LinearLayoutCompat liOpenUrl;
     @BindView(R.id.li_main_write)
     LinearLayoutCompat liWrite;
+    @BindView(R.id.li_main_password_change)
+    LinearLayoutCompat liPassChange;
 
     @BindView(R.id.fab_main_menu)
     FloatingActionButton fabMenu;
@@ -67,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements Main.View {
     FloatingActionButton fabWrite;
     @BindView(R.id.fab_main_open_url)
     FloatingActionButton fabOpenUrl;
+    @BindView(R.id.fab_main_password_change)
+    FloatingActionButton fabPassChange;
 
     @BindAnim(R.anim.fab_close)
     Animation animFabClose;
@@ -142,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements Main.View {
         if (fabOpened) {
             liWrite.startAnimation(animFabClose);
             liOpenUrl.startAnimation(animFabClose);
+            liPassChange.startAnimation(animFabClose);
             fabMenu.startAnimation(animFabMainClose);
             fabWrite.setClickable(false);
             fabOpenUrl.setClickable(false);
@@ -149,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements Main.View {
         } else {
             liWrite.startAnimation(animFabOpen);
             liOpenUrl.startAnimation(animFabOpen);
+            liPassChange.startAnimation(animFabOpen);
             fabMenu.startAnimation(animFabMainOpen);
             fabWrite.setClickable(true);
             fabOpenUrl.setClickable(true);
@@ -200,7 +206,16 @@ public class MainActivity extends AppCompatActivity implements Main.View {
 
     }
 
-    @OnClick({R.id.fab_main_menu, R.id.fab_main_open_url, R.id.fab_main_write})
+    @Override
+    public void startChangePasswordActivity(String id, String email) {
+        Intent intent = new Intent(MainActivity.this, ChangePasswordActivity.class)
+                .putExtra("id", id)
+                .putExtra("email", email);
+
+        startActivity(intent);
+    }
+
+    @OnClick({R.id.fab_main_menu, R.id.fab_main_open_url, R.id.fab_main_write, R.id.fab_main_password_change})
     public void onFabClick(View v) {
         int id = v.getId();
         switch (id) {
@@ -212,6 +227,9 @@ public class MainActivity extends AppCompatActivity implements Main.View {
                 break;
             case R.id.fab_main_write:
                 presenter.onPostArticle();
+                break;
+            case R.id.fab_main_password_change:
+                presenter.onChangePassword();
                 break;
         }
     }
@@ -228,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements Main.View {
     }
 
     @OnFocusChange(R.id.et_main_url)
-    public void onFocusChange(View view, boolean hasFocus) {
+    public void onFocusChange(boolean hasFocus) {
         if (!hasFocus)
             toggleUrlHeader();
     }

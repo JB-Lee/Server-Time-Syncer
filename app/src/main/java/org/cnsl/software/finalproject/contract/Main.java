@@ -24,6 +24,8 @@ public interface Main {
 
         void startPostActivity(String user);
 
+        void startChangePasswordActivity(String id, String email);
+
         void scrollTop();
     }
 
@@ -35,6 +37,8 @@ public interface Main {
         void onPostArticle();
 
         void onViewCreate();
+
+        void onChangePassword();
 
         void afterPostArticle(String category);
     }

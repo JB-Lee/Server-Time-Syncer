@@ -1,6 +1,7 @@
 package org.cnsl.software.finalproject.models;
 
 import org.cnsl.software.finalproject.utils.Async;
+import org.cnsl.software.finalproject.utils.GlobalVariable;
 import org.cnsl.software.finalproject.utils.HttpHelper;
 import org.cnsl.software.finalproject.utils.RequestWrapper;
 
@@ -57,7 +58,7 @@ public class MainModel {
         param.put("nums", 20);
 
         RequestWrapper.doRequest(
-                "http://192.168.0.18:5000/board/lookup",
+                GlobalVariable.getServerUrl() + "/board/lookup",
                 param,
                 listener
         );

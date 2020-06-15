@@ -12,11 +12,10 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.cnsl.software.finalproject.contract.Login;
 
-import java.util.Objects;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 public class LoginActivity extends AppCompatActivity implements Login.View {
 
@@ -24,14 +23,25 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
     TextInputEditText etId;
     @BindView(R.id.et_login_password)
     TextInputEditText etPass;
+    @BindView(R.id.et_login_server_url)
+    TextInputEditText etServerUrl;
     @BindView(R.id.btn_login_login)
     AppCompatButton btnLogin;
+    @BindView(R.id.btn_login_server_check)
+    AppCompatButton btnServerCheck;
     @BindView(R.id.tv_login_forgot_password)
     AppCompatTextView tvFindPass;
     @BindView(R.id.tv_login_sign_up)
     AppCompatTextView tvSignUp;
+    @BindView(R.id.tv_login_server_message)
+    AppCompatTextView tvServerMsg;
 
     Login.Presenter presenter;
+
+    @Override
+    public void setServerMsg(String msg) {
+        tvServerMsg.setText(msg);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +53,16 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
         ButterKnife.bind(this);
     }
 
+    @OnClick(R.id.btn_login_server_check)
+    public void serverCheck() {
+        presenter.onCheckServer(String.valueOf(etServerUrl.getText()));
+    }
+
     @OnClick(R.id.btn_login_login)
-    public void login(View view){
+    public void login(View view) {
         presenter.onLogin(
-                Objects.requireNonNull(etId.getText()).toString(),
-                Objects.requireNonNull(etPass.getText()).toString()
+                String.valueOf(etId.getText()),
+                String.valueOf(etPass.getText())
         );
     }
 
@@ -59,6 +74,11 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
     @OnClick(R.id.tv_login_forgot_password)
     public void findPassword(View view) {
         presenter.onFindPassword();
+    }
+
+    @OnTextChanged(R.id.et_login_server_url)
+    public void onServerUrlChanged(CharSequence s, int start, int before, int count) {
+        presenter.onServerUrlChanged(s, start, before, count);
     }
 
     @Override

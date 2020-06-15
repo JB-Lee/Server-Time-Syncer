@@ -1,5 +1,6 @@
 package org.cnsl.software.finalproject.models;
 
+import org.cnsl.software.finalproject.utils.GlobalVariable;
 import org.cnsl.software.finalproject.utils.RequestWrapper;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ public class FindPasswordModel {
         param.put("email", email);
 
         RequestWrapper.doRequest(
-                "http://192.168.0.18:5000/user/password/find",
+                GlobalVariable.getServerUrl() + "/user/password/find",
                 param,
                 listener
         );

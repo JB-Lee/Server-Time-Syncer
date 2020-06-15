@@ -26,8 +26,13 @@ public class RequestWrapper {
                     }
 
                     @Override
-                    public void onError(int code, String message) {
+                    public void onFail(int code, String message) {
                         listener.onError(message);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        listener.onError(e.toString());
                     }
                 }
         );
@@ -53,8 +58,14 @@ public class RequestWrapper {
                     }
 
                     @Override
-                    public void onError(int code, String message) {
+                    public void onFail(int code, String message) {
                         listener.onError(message);
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        listener.onError(e.toString());
                     }
                 }
         );

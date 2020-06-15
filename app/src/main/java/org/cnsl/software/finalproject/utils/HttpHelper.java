@@ -1,6 +1,7 @@
 package org.cnsl.software.finalproject.utils;
 
 import android.util.Log;
+import android.util.Pair;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,12 +25,6 @@ public class HttpHelper {
 
     public enum Method {
         GET, POST
-    }
-
-    public interface ResponseListener {
-        void onSuccess(JSONObject json);
-
-        void onError(int code, String message);
     }
 
     private static void _request(String url, Method method, Map<String, Object> params, ResponseListener listener) throws IOException {
@@ -57,6 +52,8 @@ public class HttpHelper {
 
         URL u = new URL(url);
         HttpURLConnection http = (HttpURLConnection) u.openConnection();
+        http.setConnectTimeout(2000);
+        http.setReadTimeout(2000);
         http.setRequestMethod(method.toString());
 
         if (Method.POST.equals(method)) {
@@ -81,12 +78,12 @@ public class HttpHelper {
                 Log.e(TAG, e.toString());
             }
         } else {
-            listener.onError(code, http.getResponseMessage());
+            listener.onFail(code, http.getResponseMessage());
         }
         http.disconnect();
     }
 
-    private static String _simpleRequest(String url, Method method, Map<String, Object> params) throws IOException {
+    private static Pair<Boolean, Object> _simpleRequest(String url, Method method, Map<String, Object> params) throws IOException {
         String param = null;
 
         if (params != null) {
@@ -111,6 +108,8 @@ public class HttpHelper {
 
         URL u = new URL(url);
         HttpURLConnection http = (HttpURLConnection) u.openConnection();
+        http.setConnectTimeout(2000);
+        http.setReadTimeout(2000);
         http.setRequestMethod(method.toString());
 
         if (Method.POST.equals(method)) {
@@ -132,11 +131,38 @@ public class HttpHelper {
 
             http.disconnect();
 
-            return data.toString();
+            return new Pair<Boolean, Object>(true, data.toString());
         } else {
             http.disconnect();
-            return http.getResponseMessage();
+            return new Pair<Boolean, Object>(false, new Pair<Integer, String>(code, http.getResponseMessage()));
         }
+
+    }
+
+    public static void asyncRequest(String url, Method method, Map<String, Object> params, ResponseListener listener) {
+        new Async.Executor<Void>()
+                .setCallable(() -> {
+                    Pair<Boolean, Object> result = _simpleRequest(url, method, params);
+                    if (result.first)
+                        listener.onSuccess(new JSONObject((String) result.second));
+                    else {
+                        Pair<Integer, String> failResult = (Pair<Integer, String>) result.second;
+                        listener.onFail(failResult.first, failResult.second);
+                    }
+                    return null;
+                })
+                .setCallback(new Async.Callback<Void>() {
+                    @Override
+                    public void onResult(Void result) {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        listener.onError(e);
+                    }
+                })
+                .execute();
 
     }
 
@@ -152,15 +178,12 @@ public class HttpHelper {
         }.start();
     }
 
-    public static void asyncRequest(String url, Method method, Map<String, Object> params, ResponseListener listener) {
-        new Async.Executor<Void>()
-                .setCallable(() -> {
-                    String msg = _simpleRequest(url, method, params);
-                    listener.onSuccess(new JSONObject(msg));
-                    return null;
-                })
-                .execute();
+    public interface ResponseListener {
+        void onSuccess(JSONObject json);
 
+        void onFail(int code, String message);
+
+        void onError(Exception e);
     }
 
     public static HttpURLConnection urlOpen(String url) throws IOException {

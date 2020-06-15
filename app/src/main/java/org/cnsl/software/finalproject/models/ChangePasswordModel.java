@@ -7,7 +7,34 @@ import org.cnsl.software.finalproject.utils.RequestWrapper;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignUpModel {
+public class ChangePasswordModel {
+
+    String id;
+    String email;
+
+    public ChangePasswordModel(String id, String email) {
+        this.id = id;
+        this.email = email;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void doChangePassword(String pw, RequestWrapper.ApiListener listener) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("id", id);
+        param.put("pw", pw);
+        RequestWrapper.doRequest(
+                GlobalVariable.getServerUrl() + "/user/password/change",
+                param,
+                listener
+        );
+    }
 
     public int getPasswordRisk(String pw) {
         return PasswordHelper.getPasswordRisk(pw);
@@ -17,27 +44,6 @@ public class SignUpModel {
         return risk / (60 * 60) > 1;
     }
 
-    public void doSignUp(String id, String email, String pw, RequestWrapper.ApiListener listener) {
-        Map<String, Object> param = new HashMap<>();
-        param.put("id", id);
-        param.put("email", email);
-        param.put("pw", pw);
-        RequestWrapper.doRequest(
-                GlobalVariable.getServerUrl() + "/user/signup",
-                param,
-                listener
-        );
-    }
-
-    public void chkId(String id, RequestWrapper.ApiListener listener) {
-        Map<String, Object> param = new HashMap<>();
-        param.put("id", id);
-        RequestWrapper.doRequest(
-                GlobalVariable.getServerUrl() + "/user/check",
-                param,
-                listener
-        );
-    }
 
     public String getCrackTime(int risk) {
         return PasswordHelper.getCrackTime(risk);

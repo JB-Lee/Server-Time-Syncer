@@ -1,5 +1,6 @@
 package org.cnsl.software.finalproject.models;
 
+import org.cnsl.software.finalproject.utils.GlobalVariable;
 import org.cnsl.software.finalproject.utils.RequestWrapper;
 
 import java.util.HashMap;
@@ -13,8 +14,16 @@ public class LoginModel {
         param.put("pw", pw);
 
         RequestWrapper.doRequest(
-                "http://192.168.0.18:5000/user/login",
+                GlobalVariable.getServerUrl() + "/user/login",
                 param,
+                listener
+        );
+    }
+
+    public void doCheckServer(String url, RequestWrapper.ApiListener listener) {
+        RequestWrapper.doRequest(
+                url + "/hello",
+                null,
                 listener
         );
     }

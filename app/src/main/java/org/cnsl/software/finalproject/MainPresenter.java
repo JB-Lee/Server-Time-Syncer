@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.cnsl.software.finalproject.board.BoardItem;
 import org.cnsl.software.finalproject.contract.Main;
 import org.cnsl.software.finalproject.models.MainModel;
+import org.cnsl.software.finalproject.utils.Async;
 import org.cnsl.software.finalproject.utils.RequestWrapper;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,7 +88,7 @@ public class MainPresenter implements Main.Presenter {
                         ));
 
                     }
-                    new Handler(Looper.getMainLooper()).post(() -> {
+                    Async.syncRunTask(() -> {
                         mainView.boardSetItem(list);
                         mainView.scrollTop();
                     });
@@ -108,6 +109,11 @@ public class MainPresenter implements Main.Presenter {
                 Log.d("error", msg);
             }
         });
+    }
+
+    @Override
+    public void onChangePassword() {
+        mainView.startChangePasswordActivity(mainModel.getId(), mainModel.getEmail());
     }
 
     public void refreshBoard() {
