@@ -51,6 +51,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/common_id"
                         android:inputType="text"
+                        android:nextFocusForward="@id/btn_signup_check"
                         android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -61,6 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorAccent"
+                    android:nextFocusForward="@id/et_signup_email"
                     android:text="@string/sign_up_check_id_hint"
                     android:textColor="@color/colorPrimary" />
 
@@ -92,6 +94,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/common_email"
                 android:inputType="textEmailAddress"
+                android:nextFocusForward="@id/et_signup_password"
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -119,6 +122,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/common_password"
                 android:inputType="textPassword"
+                android:nextFocusForward="@id/et_signup_confirm_password"
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -160,6 +164,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/common_confirm_password"
                 android:inputType="textPassword"
+                android:nextFocusForward="@id/btn_signup_sign_up"
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
