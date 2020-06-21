@@ -52,7 +52,9 @@
                         android:hint="@string/common_id"
                         android:inputType="text"
                         android:nextFocusForward="@id/btn_signup_check"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/colorTextLighter" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -95,7 +97,9 @@
                 android:hint="@string/common_email"
                 android:inputType="textEmailAddress"
                 android:nextFocusForward="@id/et_signup_password"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/colorTextLighter" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_signup_email_message"
@@ -123,7 +127,9 @@
                 android:hint="@string/common_password"
                 android:inputType="textPassword"
                 android:nextFocusForward="@id/et_signup_confirm_password"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/colorTextLighter" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -165,7 +171,9 @@
                 android:hint="@string/common_confirm_password"
                 android:inputType="textPassword"
                 android:nextFocusForward="@id/btn_signup_sign_up"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/colorTextLighter" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_signup_password_msg"

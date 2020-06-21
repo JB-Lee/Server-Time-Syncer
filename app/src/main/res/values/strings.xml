@@ -1,4 +1,9 @@
 <resources>
+
+    <!--    Preference-->
+    <string name="pref_server_url">server_url</string>
+
+    <!--    UI String-->
     <string name="app_name">FinalProject</string>
     <string name="common_hostname_placeholder">#%s</string>
     <string name="common_login">로그인</string>

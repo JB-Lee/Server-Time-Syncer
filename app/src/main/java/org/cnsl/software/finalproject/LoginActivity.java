@@ -1,6 +1,8 @@
 package org.cnsl.software.finalproject;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.cnsl.software.finalproject.contract.Login;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,7 +39,11 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
     @BindView(R.id.tv_login_server_message)
     AppCompatTextView tvServerMsg;
 
+    @BindString(R.string.pref_server_url)
+    String str_server_url;
+
     Login.Presenter presenter;
+    SharedPreferences sharedPref;
 
     @Override
     public void setServerMsg(String msg) {
@@ -51,11 +58,22 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
         presenter = new LoginPresenter(this);
 
         ButterKnife.bind(this);
+
+        sharedPref = getPreferences(Context.MODE_PRIVATE);
+
+        if (sharedPref.contains(str_server_url)) {
+            etServerUrl.setText(sharedPref.getString(str_server_url, ""));
+            serverCheck();
+        }
+
     }
 
     @OnClick(R.id.btn_login_server_check)
     public void serverCheck() {
-        presenter.onCheckServer(String.valueOf(etServerUrl.getText()));
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(str_server_url, String.valueOf(etServerUrl.getText()));
+        editor.apply();
+        presenter.onCheckServer("http://" + etServerUrl.getText());
     }
 
     @OnClick(R.id.btn_login_login)

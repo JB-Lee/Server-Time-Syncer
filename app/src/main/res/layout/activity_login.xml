@@ -42,6 +42,8 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="3"
                     android:textColorHint="@color/colorShade"
+                    app:prefixText="http://"
+                    app:prefixTextAppearance="@style/TextAppearance.AppCompat.Medium"
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/colorTextLighter">
 

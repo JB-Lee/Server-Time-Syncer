@@ -47,7 +47,9 @@
                     android:layout_height="wrap_content"
                     android:inputType="textUri"
                     android:hint="@string/main_url_hint"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/colorTextLighter" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
